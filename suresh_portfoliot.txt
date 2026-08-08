@@ -1,0 +1,560 @@
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern Portfolio</title>
+
+  <!-- Font Awesome Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+<!-- Internal CSS -->
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:"Times New Roman", Times, serif;
+    }
+
+    body
+   {
+      background:linear-gradient(135deg,#d2d4cb 0%,#eef1f4 50%,#eef1f4 100%);
+      padding:24px;
+      color:#fff;
+      min-height:100vh;
+    }
+
+    .container{
+      width:1200px;
+      max-width:100%;
+      margin:auto;
+      background:linear-gradient(145deg,#08192d 0%,#071426 55%,#0b2038 100%);
+      border:1px solid #00bfff55;
+      border-radius:30px;
+      padding:32px 50px;
+      box-shadow:0 20px 60px #08192d55,0 0 30px #00bfff33;
+      overflow:hidden;
+      position:relative;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:20px;
+    }
+
+    .logo{
+      font-size:32px;
+      font-weight:700;
+    }
+
+    nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:28px;
+    }
+
+    nav a{
+      color:#fff;
+      text-decoration:none;
+      font-weight:600;
+      transition:.3s ease;
+      position:relative;
+      padding:8px 2px;
+    }
+
+    nav a:hover,
+    nav a.active{
+      color:#00bfff;
+    }
+
+    nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:0;
+      height:2px;
+      background:#00bfff;
+      transition:.3s ease;
+    }
+
+    nav a:hover::after,
+    nav a.active::after{width:100%;}
+
+    .hero{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:50px;
+      padding:72px 0 60px;
+      flex-wrap:wrap;
+      min-height:520px;
+    }
+
+    .content{
+      flex:1;
+      min-width:280px;
+    }
+
+    .content h1{
+      font-size:clamp(44px,6vw,68px);
+      line-height:1.05;
+      letter-spacing:-1px;
+      margin-bottom:12px;
+    }
+
+    .content h2{
+      font-size:34px;
+      color:#00bfff;
+      margin-bottom:20px;
+    }
+
+    .content p{
+      color:#d5e0eb;
+      line-height:1.8;
+      max-width:560px;
+      margin-bottom:35px;
+    }
+
+    .buttons{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-bottom:35px;
+    }
+
+    .btn{
+      padding:14px 34px;
+      border-radius:12px;
+      display:inline-block;
+      text-decoration:none;
+      font-weight:600;
+      transition:.3s;
+    }
+
+    .btn.primary{
+      background:#00bfff;
+      color:#08192d;
+      box-shadow:0 0 15px #00bfff88;
+    }
+
+    .btn.primary:hover{
+      transform:translateY(-3px);
+    }
+
+    .btn.outline{
+      border:2px solid #00bfff;
+      color:#00bfff;
+      background:transparent;
+    }
+
+    .btn.outline:hover{
+      background:#00bfff;
+      color:#08192d;
+    }
+
+    .socials{
+      display:flex;
+      gap:18px;
+    }
+
+    .socials a{
+      width:44px;
+      height:44px;
+      border:2px solid #00bfff;
+      border-radius:50%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:#00bfff;
+      text-decoration:none;
+      transition:.3s;
+    }
+
+    .socials a:hover{
+      background:#00bfff;
+      color:#08192d;
+      box-shadow:0 0 15px #00bfff88;
+    }
+
+    .image-box{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      min-width:280px;
+    }
+
+    .image-box img{
+      width:100%;
+      max-width:450px;
+      aspect-ratio:1/1;
+      border-radius:28px;
+      object-fit:cover;
+      filter:brightness(.92) contrast(1.05);
+      border:2px solid #00bfff88;
+      box-shadow:0 0 25px #00bfff55,0 18px 45px #00000055;
+      transition:transform .4s ease,box-shadow .4s ease;
+    }
+
+    section{
+      padding:72px 0;
+      border-top:1px solid #16324d;
+    }
+
+    .image-box img:hover{
+      transform:translateY(-6px) scale(1.01);
+      box-shadow:0 0 35px #00bfff77,0 20px 50px #00000066;
+    }
+
+    .section-title{
+      font-size:38px;
+      text-align:center;
+      margin-bottom:20px;
+    }
+
+    .section-text{
+      color:#c7d4e2;
+      text-align:center;
+      max-width:750px;
+      margin:0 auto;
+      line-height:1.8;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:25px;
+      margin-top:45px;
+    }
+
+    .card{
+      background:linear-gradient(145deg,#0d223b,#0a1c31);
+      border:1px solid #00bfff22;
+      padding:35px 25px;
+      border-radius:20px;
+      text-align:center;
+      transition:.3s;
+    }
+
+    .card i{
+      font-size:42px;
+      color:#00bfff;
+      margin-bottom:18px;
+    }
+
+    .card h3{
+      margin-bottom:12px;
+      font-size:22px;
+    }
+
+    .card p{
+      color:#c7d4e2;
+      line-height:1.7;
+    }
+
+    .card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 0 20px #00bfff44;
+    }
+
+    .portfolio-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:25px;
+      margin-top:45px;
+    }
+
+    .portfolio-item{
+      background:linear-gradient(145deg,#0d223b,#0a1c31);
+      border:1px solid #00bfff22;
+      border-radius:20px;
+      overflow:hidden;
+      transition:.3s;
+    }
+
+    .portfolio-item:hover{
+      transform:translateY(-8px);
+      box-shadow:0 0 20px #00bfff44;
+    }
+
+    .portfolio-item img{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+    }
+
+    .portfolio-item .info{
+      padding:22px;
+    }
+
+    .portfolio-item h3{
+      margin-bottom:10px;
+    }
+
+    .portfolio-item p{
+      color:#c7d4e2;
+      line-height:1.6;
+    }
+
+    .contact-box{
+      max-width:700px;
+      margin:40px auto 0;
+      display:grid;
+      gap:20px;
+    }
+
+    .contact-box input,
+    .contact-box textarea{
+      width:100%;
+      padding:15px 18px;
+      border:none;
+      border-radius:12px;
+      background:#0d223b;
+      color:#fff;
+      outline:none;
+    }
+
+    .contact-box textarea{
+      min-height:150px;
+      resize:vertical;
+    }
+
+    .contact-box button{
+      padding:15px;
+      border:none;
+      border-radius:12px;
+      background:#00bfff;
+      color:#08192d;
+      font-weight:700;
+      cursor:pointer;
+      transition:.3s;
+    }
+
+    .contact-box button:hover{
+      transform:translateY(-3px);
+      box-shadow:0 0 15px #00bfff88;
+    }
+
+    footer{
+      text-align:center;
+      padding-top:30px;
+      color:#c7d4e2;
+      border-top:1px solid #16324d;
+      margin-top:20px;
+    }
+
+
+    .contact-box input:focus,
+    .contact-box textarea:focus{
+      border:1px solid #00bfff;
+      box-shadow:0 0 0 3px #00bfff22;
+    }
+
+    .contact-box button:hover{
+      transform:translateY(-3px);
+      box-shadow:0 8px 20px #00bfff44;
+    }
+
+    ::selection{
+      background:#00bfff;
+      color:#08192d;
+    }
+
+    @media (max-width: 900px){
+      body{padding:12px;}
+      .container{padding:24px 22px;border-radius:22px;}
+      header{justify-content:center;}
+      nav{justify-content:center;gap:14px 22px;}
+      .hero{padding-top:48px;}
+
+      .hero{
+        flex-direction:column-reverse;
+        text-align:center;
+      }
+
+      .content p{
+        margin-left:auto;
+        margin-right:auto;
+      }
+
+      .buttons,
+      .socials{
+        justify-content:center;
+      }
+
+      .content h1{
+        font-size:44px;
+      }
+
+      .content h2{
+        font-size:28px;
+      }
+
+      .container{
+        padding:25px 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+ <div class="container">
+
+    <!-- Navbar -->
+    <header>
+    <div class="logo">R.Suresh</div>
+
+        <nav>
+        <a href="#" class="active">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+        </nav>
+        </header>
+
+    <!-- Hero Section -->
+        <section class="hero">
+        <div class="content">
+        <h1>Hi, I'm R.Suresh</h1>
+        <h2>Frontend Developer</h2>
+        
+        <p>
+          I am a passionate and self-driven Computer Science student with a strong interest in Artificial Intelligence, Agentic AI, and Full-Stack Web Development. I enjoy building practical projects that combine intelligent systems with modern user experiences. My learning journey includes machine learning concepts, responsive web design using HTML, CSS.
+        </p>
+
+        <div class="buttons">
+          <a href="#contact" class="btn outline">Let's Talk</a>
+        </div>
+
+      <div class="image-box">
+      <img src="suresh.jpeg" alt="Profile Image"/>
+      </div>
+</section>
+
+    <!-- About -->
+    <section id="about">
+      <h2 class="section-title">About Me</h2>
+      <p class="section-text">
+        I am a passionate Frontend Developer with experience in HTML, CSS,
+        JavaScript, and responsive web design. I enjoy building clean and
+        interactive interfaces that provide a great user experience while
+        continuously learning new technologies.
+
+       <h3 class="section-title">Skills</h3>
+       <div class="cards">
+        <div class="card">
+           <i class="fas fa-brain"></i>
+          <h3>Machine Learning</h3>
+          <p>AI models and intelligent systems.</p>
+          </div>
+
+     <div class="card">
+           <i class="fas fa-database"></i>
+          <h3>DBMS</h3>
+          <p>Database design, SQL, normalization.</p>
+          </div>
+
+      <div class="card">
+           <i class="fas fa-desktop"></i>
+          <h3>Operating System</h3>
+          <p>Process scheduling, memory management.</p>
+          </div>
+      
+       </div>
+
+
+      </p>
+    </section>
+
+     
+
+    <!-- Services -->
+    <section id="services">
+      <h2 class="section-title">Services</h2>
+
+      <div class="cards">
+
+        <div class="card">
+          <i class="fas fa-code"></i>
+          <h3>Web Development</h3>
+          <p>Responsive and modern websites using the latest technologies.</p>
+        </div>
+
+        <div class="card">
+          <i class="fas fa-paint-brush"></i>
+          <h3>UI/UX Design</h3>
+          <p>Beautiful and user-friendly interface designs for web projects.</p>
+        </div>
+
+        <div class="card">
+          <i class="fas fa-mobile-alt"></i>
+          <h3>Responsive Design</h3>
+          <p>Websites that work perfectly on desktop, tablet, and mobile.</p>
+        </div>
+
+      </div>
+    </section>
+
+<!-- Portfolio -->
+      <section id="portfolio">
+      <h2 class="section-title">Portfolio</h2>
+<div class="portfolio-grid">
+
+        <div class="portfolio-item">
+          <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?       auto=format&fit=crop&w=900&q=80" alt="Project 1">
+          <div class="info">
+            
+            <h3>Portfolio Website</h3>
+            <p>Personal portfolio with modern UI and responsive design.</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80" alt="Project 2">
+          <div class="info">
+            
+            <h3>Business Website</h3>
+            <p>Professional website for a business and service company.</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=900&q=80" alt="Project 3">
+          <div class="info">
+            
+            <h3>Landing Page</h3>
+            <p>High-converting landing page with attractive visuals.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <h2 class="section-title">Contact Me</h2>
+
+      <form class="contact-box">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    s
+      </div>
+    </section>
+
+</div>
+
+</body>
+</html>
+```
